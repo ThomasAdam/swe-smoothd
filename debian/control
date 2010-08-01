@@ -1,0 +1,20 @@
+Source: swe3-smoothd
+Section: admin
+Priority: optional
+Maintainer: Tim Retout <diocles@debian.org>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.9.1
+Homepage: http://www.smoothwall.org/
+
+Package: swe3-smoothd
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: privileged daemon for SmoothWall administrative tasks
+ SmoothD is a daemon that the SmoothWall web interface uses to execute
+ tasks that need administrative privileges.  This replaces setuid
+ helper scripts.
+ .
+ It is unlikely that this package will be useful without the rest of
+ the SmoothWall web interface.
+ .
+ This is the version of smoothd supplied with SmoothWall Express 3.0.

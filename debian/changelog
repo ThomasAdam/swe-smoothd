@@ -1,0 +1,5 @@
+swe3-smoothd (0.0~svn1022-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Tim Retout <diocles@debian.org>  Fri, 30 Jul 2010 20:18:42 -0400
