@@ -1,0 +1,301 @@
+--- a/sysadvnet.cpp
++++ b/sysadvnet.cpp
+@@ -40,7 +40,7 @@
+ {
+ 	int error = 0;
+ 	int fd = -1;
+-	ConfigVAR settings("/var/smoothwall/advnet/settings");
++	ConfigVAR settings("/var/lib/smoothwall/advnet/settings");
+ 	
+ 	char noping[] = "0\n";
+ 	char cookies[] = "0\n";
+--- a/sysalcatel.cpp
++++ b/sysalcatel.cpp
+@@ -41,9 +41,9 @@
+ 	int error = 0;
+ 	struct stat sb;
+ 
+-	if ((stat("/var/smoothwall/adsl/mgmt.o", &sb) == 0) && sb.st_mode & S_IRUSR)
++	if ((stat("/var/lib/smoothwall/adsl/mgmt.o", &sb) == 0) && sb.st_mode & S_IRUSR)
+ 	{
+-		error = simplesecuresysteml("/usr/bin/modem_run", "-f", "/var/smoothwall/adsl/mgmt.o", "-v", "1", NULL);
++		error = simplesecuresysteml("/usr/bin/modem_run", "-f", "/var/lib/smoothwall/adsl/mgmt.o", "-v", "1", NULL);
+ 		response = "Alcatel USB firmware loaded";
+ 		if (error)
+ 			response += stringprintf(" but with error return %d", error);
+--- a/sysclamav.cpp
++++ b/sysclamav.cpp
+@@ -73,7 +73,7 @@
+ 
+ 	response = "ClamAV Process started";
+ 
+-	ConfigVAR settings("/var/smoothwall/clamav/settings");
++	ConfigVAR settings("/var/lib/smoothwall/clamav/settings");
+ 
+ 	if (settings["ENABLE_ZAP"] == "on" || settings["ENABLE_GUARDIAN"] == "on")
+ 	{
+--- a/sysdhcpd.cpp
++++ b/sysdhcpd.cpp
+@@ -72,8 +72,8 @@
+ int start_dhcpd(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigSTR green("/var/smoothwall/dhcp/green");
+-	ConfigSTR purple("/var/smoothwall/dhcp/purple");
++	ConfigSTR green("/var/lib/smoothwall/dhcp/green");
++	ConfigSTR purple("/var/lib/smoothwall/dhcp/purple");
+ 	std::vector<std::string> args;
+ 	
+ 	args.push_back("/usr/sbin/dhcpd");
+--- a/sysim.cpp
++++ b/sysim.cpp
+@@ -77,7 +77,7 @@
+ 
+ 	response = "IMSpector Process started";
+ 
+-	ConfigVAR settings("/var/smoothwall/im/settings");
++	ConfigVAR settings("/var/lib/smoothwall/im/settings");
+ 
+ 	ipb.push_back("iptables -t nat -F im");
+ 	
+@@ -110,7 +110,7 @@
+ 	if (settings["ENABLE"] == "on")
+ 	{
+ 		error = simplesecuresysteml("/usr/sbin/imspector", "-c", 
+-			"/var/smoothwall/im/imspector.conf", NULL);
++			"/var/lib/smoothwall/im/imspector.conf", NULL);
+ 
+ 		if (error)
+ 			response = "IMSpector Start Failed!";
+--- a/sysipblock.cpp
++++ b/sysipblock.cpp
+@@ -38,7 +38,7 @@
+ int set_ipblock(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigCSV config("/var/smoothwall/ipblock/config");
++	ConfigCSV config("/var/lib/smoothwall/ipblock/config");
+ 	std::vector<std::string>ipb;
+ 	std::string::size_type n;
+ 	
+--- a/sysiptables.cpp
++++ b/sysiptables.cpp
+@@ -55,7 +55,7 @@
+ 
+ 	memset(&globbuf, 0, sizeof(glob_t));
+ 
+-	glob("/var/smoothwall/knownports/*", GLOB_DOOFFS, NULL, &globbuf);
++	glob("/var/lib/smoothwall/knownports/*", GLOB_DOOFFS, NULL, &globbuf);
+ 
+ 	for (size_t i = 0; i < globbuf.gl_pathc; i++)
+ 	{
+@@ -63,7 +63,7 @@
+ 		char buffer[2048];
+ 
+ 		/* determine the filename */
+-		char *section = globbuf.gl_pathv[i] + strlen("/var/smoothwall/knownports/");
++		char *section = globbuf.gl_pathv[i] + strlen("/var/lib/smoothwall/knownports/");
+ 		
+ 		if (!input) continue;
+ 
+@@ -118,10 +118,10 @@
+ 	std::vector<std::string>ipbnat;
+ 	std::vector<std::string>ipbmangle;
+ 
+-	ConfigSTR localip("/var/smoothwall/red/local-ipaddress");
+-	ConfigSTR iface("/var/smoothwall/red/iface");
+-	ConfigCSV fwdfile("/var/smoothwall/portfw/config");
+-	ConfigVAR ethernet("/var/smoothwall/ethernet/settings");
++	ConfigSTR localip("/var/lib/smoothwall/red/local-ipaddress");
++	ConfigSTR iface("/var/lib/smoothwall/red/iface");
++	ConfigCSV fwdfile("/var/lib/smoothwall/portfw/config");
++	ConfigVAR ethernet("/var/lib/smoothwall/ethernet/settings");
+ 
+ 	if ((error = (localip.str() == "")))
+ 	{
+@@ -267,9 +267,9 @@
+ int set_outgoing(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigVAR settings("/var/smoothwall/outgoing/settings");
+-	ConfigCSV config("/var/smoothwall/outgoing/config");
+-	ConfigCSV machineconfig("/var/smoothwall/outgoing/machineconfig");
++	ConfigVAR settings("/var/lib/smoothwall/outgoing/settings");
++	ConfigCSV config("/var/lib/smoothwall/outgoing/config");
++	ConfigCSV machineconfig("/var/lib/smoothwall/outgoing/machineconfig");
+ 	std::vector<std::string>ipb;
+ 	std::string::size_type n;
+ 	
+@@ -372,7 +372,7 @@
+ int set_internal(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigCSV config("/var/smoothwall/dmzholes/config");
++	ConfigCSV config("/var/lib/smoothwall/dmzholes/config");
+ 	std::vector<std::string>ipb;
+ 	std::string::size_type n;
+ 	
+--- a/sysntpd.cpp
++++ b/sysntpd.cpp
+@@ -71,7 +71,7 @@
+ 
+ int start_ntpd( std::vector<std::string> & parameters, std::string & response )
+ {
+-	ConfigVAR settings("/var/smoothwall/time/settings");
++	ConfigVAR settings("/var/lib/smoothwall/time/settings");
+ 	int error = 0;
+ 
+ 	if (settings["NTPD"] == "on")
+--- a/sysp3scan.cpp
++++ b/sysp3scan.cpp
+@@ -77,7 +77,7 @@
+ 
+ 	response = "P3Scan Process started";
+ 
+-	ConfigVAR settings("/var/smoothwall/p3scan/settings");
++	ConfigVAR settings("/var/lib/smoothwall/p3scan/settings");
+ 
+ 	ipb.push_back("iptables -t nat -F p3scan");
+ 	
+@@ -95,7 +95,7 @@
+ 	if (settings["ENABLE"] == "on")
+ 	{
+ 		error = simplesecuresysteml("/usr/sbin/p3scan", "-f", 
+-			"/var/smoothwall/p3scan/p3scan.conf", NULL);
++			"/var/lib/smoothwall/p3scan/p3scan.conf", NULL);
+ 
+ 		if (error)
+ 			response = "P3Scan Start Failed!";
+--- a/syssip.cpp
++++ b/syssip.cpp
+@@ -100,7 +100,7 @@
+ 	ipbnat.push_back("iptables -t nat -F sip");
+ 	ipbfilter.push_back("iptables -t filter -F siprtpports");
+ 
+-	ConfigVAR settings("/var/smoothwall/sipproxy/settings");
++	ConfigVAR settings("/var/lib/smoothwall/sipproxy/settings");
+ 	
+ 	int clients = atol(settings["CLIENTS"].c_str());
+ 	
+--- a/syssnort.cpp
++++ b/syssnort.cpp
+@@ -72,16 +72,16 @@
+ int start_snort(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigSTR iface("/var/smoothwall/red/iface");
+-	ConfigSTR dns1("/var/smoothwall/red/dns1");
+-	ConfigSTR dns2("/var/smoothwall/red/dns2");
+-	ConfigSTR locip("/var/smoothwall/red/local-ipaddress");
++	ConfigSTR iface("/var/lib/smoothwall/red/iface");
++	ConfigSTR dns1("/var/lib/smoothwall/red/dns1");
++	ConfigSTR dns2("/var/lib/smoothwall/red/dns2");
++	ConfigSTR locip("/var/lib/smoothwall/red/local-ipaddress");
+ 	std::string::size_type n;
+ 	std::string command;
+ 	FILE *varsfile;
+ 	int fd;
+ 	int trys;
+-	ConfigVAR settings("/var/smoothwall/snort/settings");
++	ConfigVAR settings("/var/lib/smoothwall/snort/settings");
+ 	
+ 	if (iface.str() == "")
+ 	{
+--- a/syssquid.cpp
++++ b/syssquid.cpp
+@@ -72,7 +72,7 @@
+ int start_squid(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigVAR settings("/var/smoothwall/proxy/settings");	
++	ConfigVAR settings("/var/lib/smoothwall/proxy/settings");	
+ 	std::vector<std::string>ipb;
+ 
+ 	response = "Squid Process started";
+@@ -91,8 +91,8 @@
+ 	
+ 	if (settings["ENABLE"] == "on")
+ 	{ 
+-		simplesecuresysteml("/usr/sbin/squid", "-D", "-z", "-f", "/var/smoothwall/proxy/squid.conf", NULL);
+-		simplesecuresysteml("/usr/sbin/squid", "-D", "-f", "/var/smoothwall/proxy/squid.conf", NULL);
++		simplesecuresysteml("/usr/sbin/squid", "-D", "-z", "-f", "/var/lib/smoothwall/proxy/squid.conf", NULL);
++		simplesecuresysteml("/usr/sbin/squid", "-D", "-f", "/var/lib/smoothwall/proxy/squid.conf", NULL);
+ 
+ 		if (settings["TRANSPARENT"] == "on")
+ 			ipb.push_back("iptables -t nat -A squid -p tcp --dport 80 -j REDIRECT --to-ports 800");
+--- a/syssshd.cpp
++++ b/syssshd.cpp
+@@ -72,7 +72,7 @@
+ int start_sshd(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigVAR settings("/var/smoothwall/remote/settings");
++	ConfigVAR settings("/var/lib/smoothwall/remote/settings");
+ 	
+ 	if (settings["ENABLE_SSH"] == "on")
+ 	{
+--- a/systimedaccess.cpp
++++ b/systimedaccess.cpp
+@@ -53,7 +53,7 @@
+ 	static bool setmode = true;
+ 	static bool firstset = false;
+ 
+-	ConfigVAR settings("/var/smoothwall/timedaccess/settings");
++	ConfigVAR settings("/var/lib/smoothwall/timedaccess/settings");
+ 
+ 	std::string mode = settings["MODE"];
+ 
+@@ -95,7 +95,7 @@
+ int set_timed_access(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigCSV config("/var/smoothwall/timedaccess/machines");
++	ConfigCSV config("/var/lib/smoothwall/timedaccess/machines");
+ 	std::vector<std::string>ipb;
+ 	std::string::size_type n;
+ 	
+--- a/systraffic.cpp
++++ b/systraffic.cpp
+@@ -41,7 +41,7 @@
+ 	int error = 0;
+ 	struct stat sb;
+ 
+-	if ((stat("/var/smoothwall/traffic/settings", &sb) == 0) && sb.st_mode & S_IRUSR)
++	if ((stat("/var/lib/smoothwall/traffic/settings", &sb) == 0) && sb.st_mode & S_IRUSR)
+ 	{
+ 		error = simplesecuresysteml("/usr/bin/smoothwall/trafficloader.pl", NULL);
+ 		response = "Traffic restarted";
+--- a/sysupnpd.cpp
++++ b/sysupnpd.cpp
+@@ -71,13 +71,13 @@
+ int start_upnpd(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigSTR iface("/var/smoothwall/red/iface");
++	ConfigSTR iface("/var/lib/smoothwall/red/iface");
+ 	ConfigSTR uuid("/etc/miniupnpd.uuid");
+ 	std::vector<std::string> args;
+-	ConfigVAR settings("/var/smoothwall/advnet/settings");
+-	ConfigVAR netsettings("/var/smoothwall/ethernet/settings");
+-	ConfigVAR ownershipsettings("/var/smoothwall/main/ownership");
+-	ConfigVAR productdatasettings("/var/smoothwall/main/productdata");
++	ConfigVAR settings("/var/lib/smoothwall/advnet/settings");
++	ConfigVAR netsettings("/var/lib/smoothwall/ethernet/settings");
++	ConfigVAR ownershipsettings("/var/lib/smoothwall/main/ownership");
++	ConfigVAR productdatasettings("/var/lib/smoothwall/main/productdata");
+ 
+ 	args.push_back("/usr/sbin/miniupnpd");
+ 	args.push_back("-f");
+--- a/sysxtaccess.cpp
++++ b/sysxtaccess.cpp
+@@ -38,8 +38,8 @@
+ int set_xtaccess(std::vector<std::string> & parameters, std::string & response)
+ {
+ 	int error = 0;
+-	ConfigSTR ifacef("/var/smoothwall/red/iface");
+-	ConfigCSV config("/var/smoothwall/xtaccess/config");
++	ConfigSTR ifacef("/var/lib/smoothwall/red/iface");
++	ConfigCSV config("/var/lib/smoothwall/xtaccess/config");
+ 	std::vector<std::string>ipb;
+ 	std::string::size_type n;
+ 	std::string iface = ifacef.str();

@@ -1,6 +1,6 @@
 libsmoothd.so /usr/lib/swe3/smoothd/
 sys*.so /usr/lib/swe3/smoothd/modules/
 smoothd.pm /usr/share/swe3/perl/
-smoothd /usr/sbin/
+swe3-smoothd /usr/sbin/
 smoothcom /usr/bin/
 default /etc/swe3/smoothd/sockets/

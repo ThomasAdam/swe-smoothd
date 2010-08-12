@@ -1,30 +1,31 @@
-Index: swe3-smoothd/Makefile
-===================================================================
---- swe3-smoothd.orig/Makefile	2010-07-30 22:27:51.000000000 -0400
-+++ swe3-smoothd/Makefile	2010-08-01 14:23:57.000000000 -0400
-@@ -8,7 +8,7 @@
+--- a/Makefile
++++ b/Makefile
+@@ -8,23 +8,30 @@
  OBJS=
- LIB_OBJS = module.o UDSocket.o pid.o setuid.o config.o
+ LIB_OBJS = module.o UDSocket.o pid.o setuid.o config.o ipbatch.o ipbatchc.o $(IPTABLES_SRC_DIR)/iptables.o $(IPTABLES_SRC_DIR)/libiptc/libiptc.a
  MAIN = main.cpp
 -LIBS = -ldl /usr/lib/libsmoothd.so 
+-BIN = smoothd
 +LIBS = -Wl,-rpath=/usr/lib/swe3/smoothd libsmoothd.so
- BIN = smoothd
++BIN = swe3-smoothd
  
  MODULES = sysshutdown sysinstall sysim sysp3scan sysalcatel sysdhcpd sysdnsproxy \
-@@ -16,15 +16,20 @@
+ 	sysntpd syssnort syssquid syssshd sysupnpd sysadvnet sysipblock \
  	sysxtaccess sysupdown sysipsec systimeset sysiptables systraffic syssip sysclamav \
  	systimedaccess
  
 -MODULEFLAGS = $(CXXFLAGS) -shared -Wl,-soname,$@.so -o $@.so $@.cpp $(LIBS)
 +MODULEFLAGS = $(CXXFLAGS) -shared -fPIC -o $@.so $@.cpp $(LIBS)
  
- all: libsmoothd smoothd $(MODULES) smoothcom
+ all: libsmoothd smoothd $(MODULES) smoothcom ipbatchtest
  
 +module.o: CFLAGS += -fPIC
 +UDSocket.o: CFLAGS += -fPIC
 +pid.o: CFLAGS += -fPIC
 +setuid.o: CFLAGS += -fPIC
 +config.o: CFLAGS += -fPIC
++ipbatch.o: CFLAGS += -fPIC
++ipbatchc.o: CFLAGS += -fPIC
 +
  modules: $(MODULES)
  
@@ -35,7 +36,7 @@ Index: swe3-smoothd/Makefile
  
  smoothd: $(OBJS) 
  	$(CXX) -o $(BIN) $(DFLAGS) $(MAIN) $(OBJS) $(LIBS)
-@@ -33,7 +38,7 @@
+@@ -33,10 +40,10 @@
  	$(CXX) -g -o ipbatchtest $(DFLAGS) ipbatchtest.cpp $(OBJS) $(LIBS) 
  
  smoothcom:
@@ -43,4 +44,8 @@ Index: swe3-smoothd/Makefile
 +	$(CXX) -o smoothcom $(CXXFLAGS) smoothcom.cpp $(LIBS)
  
  clean:
- 	rm -f $(OBJS) $(BIN) *.o *.so modules smoothcom
+-	rm -f $(OBJS) $(BIN) *.o *.so modules smoothcom
++	rm -f $(OBJS) $(BIN) *.o *.so modules smoothcom ipbatchtest
+ 
+ sysshutdown : $(OBJS)  
+ 	$(CXX) $(MODULEFLAGS)

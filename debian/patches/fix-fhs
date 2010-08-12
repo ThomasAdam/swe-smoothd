@@ -1,7 +1,5 @@
-Index: swe3-smoothd/main.cpp
-===================================================================
---- swe3-smoothd.orig/main.cpp	2010-08-01 14:30:27.000000000 -0400
-+++ swe3-smoothd/main.cpp	2010-08-01 14:57:35.000000000 -0400
+--- a/main.cpp
++++ b/main.cpp
 @@ -35,11 +35,11 @@
  
  // configuration details
@@ -10,8 +8,9 @@ Index: swe3-smoothd/main.cpp
 +#define SOCKET       "/var/run/swe3-smoothd.socket" /* FIXME*/
  #define IDENT        "smoothd"
  #define BINARY       "smoothd"
- #define PID          "/var/run/smoothd.pid"
+-#define PID          "/var/run/smoothd.pid"
 -#define MODULESUBDIR "/usr/lib/smoothd/"
++#define PID          "/var/run/swe3-smoothd.pid"
 +#define MODULESUBDIR "/usr/lib/swe3/smoothd/modules/"
  
  volatile int abort_now = 0;
@@ -25,10 +24,8 @@ Index: swe3-smoothd/main.cpp
  
  		std::vector<Client *> client_sockets;
  
-Index: swe3-smoothd/setuid.cpp
-===================================================================
---- swe3-smoothd.orig/setuid.cpp	2010-08-01 14:29:26.000000000 -0400
-+++ swe3-smoothd/setuid.cpp	2010-08-01 14:30:27.000000000 -0400
+--- a/setuid.cpp
++++ b/setuid.cpp
 @@ -496,7 +496,7 @@
  	}
  	
@@ -38,10 +35,8 @@ Index: swe3-smoothd/setuid.cpp
  	len = sizeof(address);
  
  	timeOut.tv_sec = TIMEOUT;
-Index: swe3-smoothd/smoothd.pm
-===================================================================
---- swe3-smoothd.orig/smoothd.pm	2010-08-01 14:29:26.000000000 -0400
-+++ swe3-smoothd/smoothd.pm	2010-08-01 14:30:27.000000000 -0400
+--- a/smoothd.pm
++++ b/smoothd.pm
 @@ -27,7 +27,7 @@
  
  	# connect the socket to the communications socket
@@ -51,10 +46,8 @@ Index: swe3-smoothd/smoothd.pm
  	
  	if ( not defined $localsocket ){
  		`/usr/bin/logger -t SmoothDClient "Unable to connect socket for communications with SmoothD for $cmds"`;
-Index: swe3-smoothd/default
-===================================================================
---- swe3-smoothd.orig/default	2010-08-01 14:29:26.000000000 -0400
-+++ swe3-smoothd/default	2010-08-01 14:30:27.000000000 -0400
+--- a/default
++++ b/default
 @@ -1,3 +1,3 @@
  user=nobody
  group=nobody
