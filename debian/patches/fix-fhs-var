@@ -236,24 +236,24 @@
  	{
 --- a/systimedaccess.cpp
 +++ b/systimedaccess.cpp
-@@ -53,7 +53,7 @@
- 	static bool setmode = true;
- 	static bool firstset = false;
+@@ -59,7 +59,7 @@
+ 	if (!firstset)
+ 	{
+ 		FILE *varhandle;
+-		if (!(varhandle = fopen("/var/smoothwall/red/active", "r")))
++		if (!(varhandle = fopen("/var/lib/smoothwall/red/active", "r")))
+ 		{
+ 			response = "The red interface is inactive, aborting making changes.";
+ 			syslog(LOG_INFO, "Timed access: %s", response.c_str());
+@@ -68,7 +68,7 @@
+ 		fclose(varhandle);
+ 	}
  
 -	ConfigVAR settings("/var/smoothwall/timedaccess/settings");
 +	ConfigVAR settings("/var/lib/smoothwall/timedaccess/settings");
  
  	std::string mode = settings["MODE"];
  
-@@ -95,7 +95,7 @@
- int set_timed_access(std::vector<std::string> & parameters, std::string & response)
- {
- 	int error = 0;
--	ConfigCSV config("/var/smoothwall/timedaccess/machines");
-+	ConfigCSV config("/var/lib/smoothwall/timedaccess/machines");
- 	std::vector<std::string>ipb;
- 	std::string::size_type n;
- 	
 --- a/systraffic.cpp
 +++ b/systraffic.cpp
 @@ -41,7 +41,7 @@
