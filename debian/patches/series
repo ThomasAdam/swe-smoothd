@@ -2,5 +2,5 @@ gcc-4.3-compat
 fix-buildsystem
 fix-fhs
 fix-fhs-var
-www-permissions
+permissions
 fix-iptables-libs
