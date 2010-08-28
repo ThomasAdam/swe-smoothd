@@ -4,3 +4,4 @@ fix-fhs
 fix-fhs-var
 www-permissions
 fix-iptables-libs
+smoothd-configwriter-commands
