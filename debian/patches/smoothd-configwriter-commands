@@ -1,7 +1,5 @@
-Index: swe3-smoothd/Makefile
-===================================================================
---- swe3-smoothd.orig/Makefile	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/Makefile	2010-08-28 19:49:44.000000000 +0100
+--- a/Makefile
++++ b/Makefile
 @@ -10,7 +10,7 @@
  MODULES = sysshutdown sysinstall sysim sysp3scan sysalcatel sysdhcpd sysdnsproxy \
  	sysntpd syssnort syssquid syssshd sysupnpd sysadvnet sysipblock \
@@ -20,10 +18,8 @@ Index: swe3-smoothd/Makefile
  
  ipbatchc.o: ipbatch.h 
  	$(CC) -c $(CFLAGS) -DIPTABLES_VERSION=\"$(IPTABLES_VER)\" -Wall -Wunused -I$(KERNEL_DIR)/include -I$(IPTABLES_SRC_DIR)/include/ -I. -DIPT_LIB_DIR=\"$(IPT_LIB_DIR)\"  ipbatchc.c 
-Index: swe3-smoothd/syshost.cpp
-===================================================================
---- swe3-smoothd.orig/syshost.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/syshost.cpp	2010-08-28 19:50:28.000000000 +0100
+--- a/syshost.cpp
++++ b/syshost.cpp
 @@ -31,9 +31,9 @@
  int load(std::vector<CommandFunctionPair> & pairs)
  {
@@ -36,10 +32,8 @@ Index: swe3-smoothd/syshost.cpp
  
  	return (0);
  }
-Index: swe3-smoothd/sysim.cpp
-===================================================================
---- swe3-smoothd.orig/sysim.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/sysim.cpp	2010-08-28 20:00:01.000000000 +0100
+--- a/sysim.cpp
++++ b/sysim.cpp
 @@ -26,6 +26,7 @@
  	int restart_im(std::vector<std::string> & parameters, std::string & response);
  	int   start_im(std::vector<std::string> & parameters, std::string & response);
@@ -67,7 +61,7 @@ Index: swe3-smoothd/sysim.cpp
 +    int error = 0;
 +    const char *cmd = "/usr/share/swe3/bin/writeim.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't write out IMSpector config file.";
@@ -80,10 +74,8 @@ Index: swe3-smoothd/sysim.cpp
  int restart_im(std::vector<std::string> & parameters, std::string & response)
  {
  	int error = 0;
-Index: swe3-smoothd/sysdhcpd.cpp
-===================================================================
---- swe3-smoothd.orig/sysdhcpd.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/sysdhcpd.cpp	2010-08-28 20:08:28.000000000 +0100
+--- a/sysdhcpd.cpp
++++ b/sysdhcpd.cpp
 @@ -26,6 +26,7 @@
  	int restart_dhcpd(std::vector<std::string> & parameters, std::string & response);
  	int start_dhcpd(std::vector<std::string> & parameters, std::string & response);
@@ -112,7 +104,7 @@ Index: swe3-smoothd/sysdhcpd.cpp
 +
 +    const char *cmd = "/usr/share/swe3/bin/writedhcp.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't run DHCPD config writer.";
@@ -125,10 +117,8 @@ Index: swe3-smoothd/sysdhcpd.cpp
  int restart_dhcpd(std::vector<std::string> & parameters, std::string & response)
  {
  	int error = 0;
-Index: swe3-smoothd/sysp3scan.cpp
-===================================================================
---- swe3-smoothd.orig/sysp3scan.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/sysp3scan.cpp	2010-08-28 20:20:18.000000000 +0100
+--- a/sysp3scan.cpp
++++ b/sysp3scan.cpp
 @@ -34,12 +34,30 @@
  	CommandFunctionPair restart_p3scan_function("p3scanrestart", "restart_p3scan", 0, 0);
  	CommandFunctionPair   start_p3scan_function("p3scanstart",     "start_p3scan", 0, 0);
@@ -151,7 +141,7 @@ Index: swe3-smoothd/sysp3scan.cpp
 +
 +    const char* cmd = "/usr/share/swe3/perl/writep3scan.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't run p3scan config writer.";
@@ -162,10 +152,8 @@ Index: swe3-smoothd/sysp3scan.cpp
  }
  
  int restart_p3scan(std::vector<std::string> & parameters, std::string & response)
-Index: swe3-smoothd/syssquid.cpp
-===================================================================
---- swe3-smoothd.orig/syssquid.cpp	2010-08-28 19:47:29.000000000 +0100
-+++ swe3-smoothd/syssquid.cpp	2010-08-28 20:33:35.000000000 +0100
+--- a/syssquid.cpp
++++ b/syssquid.cpp
 @@ -26,6 +26,7 @@
  	int restart_squid(std::vector<std::string> & parameters, std::string & response);
  	int start_squid(std::vector<std::string> & parameters, std::string & response);
@@ -193,7 +181,7 @@ Index: swe3-smoothd/syssquid.cpp
 +    int error = 0;
 +    const char* cmd = "/usr/share/swe3/bin/writeproxy.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't run proxy config writer.";
@@ -206,10 +194,8 @@ Index: swe3-smoothd/syssquid.cpp
  int restart_squid(std::vector<std::string> & parameters, std::string & response)
  {
  	int error = 0;
-Index: swe3-smoothd/syssip.cpp
-===================================================================
---- swe3-smoothd.orig/syssip.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/syssip.cpp	2010-08-28 20:54:44.000000000 +0100
+--- a/syssip.cpp
++++ b/syssip.cpp
 @@ -27,6 +27,7 @@
  	int restart_sip( std::vector<std::string> & parameters, std::string & response );
  	int   start_sip( std::vector<std::string> & parameters, std::string & response );
@@ -237,7 +223,7 @@ Index: swe3-smoothd/syssip.cpp
 +    int error = 0;
 +    const char* cmd = "/usr/share/swe3/bin/writesipproxdconf.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't run sip proxy config writer.";
@@ -250,10 +236,8 @@ Index: swe3-smoothd/syssip.cpp
  int restart_sip( std::vector<std::string> & parameters, std::string & response )
  {
  	int error = 0;
-Index: swe3-smoothd/sysntpd.cpp
-===================================================================
---- swe3-smoothd.orig/sysntpd.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/sysntpd.cpp	2010-08-28 21:06:47.000000000 +0100
+--- a/sysntpd.cpp
++++ b/sysntpd.cpp
 @@ -26,6 +26,7 @@
  	int restart_ntpd( std::vector<std::string> & parameters, std::string & response );
  	int start_ntpd( std::vector<std::string> & parameters, std::string & response );
@@ -281,7 +265,7 @@ Index: swe3-smoothd/sysntpd.cpp
 +    int error = 0;
 +    const char *cmd = "/usr/share/swe3/bin/writentpd.pl";
 +
-+    error = simplesecuresysteml( cmd );
++    error = simplesecuresysteml( cmd, NULL );
 +
 +    if( error )
 +        response = "Couldn't run ntpd config writer.";
@@ -294,10 +278,8 @@ Index: swe3-smoothd/sysntpd.cpp
  int restart_ntpd( std::vector<std::string> & parameters, std::string & response )
  {
  	int error = 0;
-Index: swe3-smoothd/sysipsec.cpp
-===================================================================
---- swe3-smoothd.orig/sysipsec.cpp	2010-08-28 19:47:28.000000000 +0100
-+++ swe3-smoothd/sysipsec.cpp	2010-08-28 21:28:21.000000000 +0100
+--- a/sysipsec.cpp
++++ b/sysipsec.cpp
 @@ -26,6 +26,7 @@
  	int restart_ipsec(std::vector<std::string> & parameters, std::string & response);
  	int start_ipsec(std::vector<std::string> & parameters, std::string & response);
