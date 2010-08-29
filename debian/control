@@ -8,7 +8,7 @@ Homepage: http://www.smoothwall.org/
 
 Package: swe3-smoothd
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, adduser
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: privileged daemon for SmoothWall administrative tasks
  SmoothD is a daemon that the SmoothWall web interface uses to execute
  tasks that need administrative privileges.  This replaces setuid
